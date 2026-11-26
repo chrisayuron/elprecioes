@@ -1,16 +1,24 @@
 rules_version = '2';
 service cloud.firestore {
  match /databases/{database}/documents {
- function signed(){return request.auth != null;}
- function adminAuth(){return signed() && request.auth.token.firebase.sign_in_provider == "password";}
- function host(s){return adminAuth() && get(/databases/$(database)/documents/sessions/$(s)).data.hostUid == request.auth.uid;}
- match /sessions/{s}{
-  allow create: if adminAuth() && request.resource.data.hostUid==request.auth.uid;
-  allow read: if signed() && (resource.data.hostUid==request.auth.uid || resource.data.status=="active");
-  allow update,delete: if host(s);
-  match /private/{docId}{allow read,write:if host(s);}
-  match /players/{uid}{allow create:if signed()&&request.auth.uid==uid&&get(/databases/$(database)/documents/sessions/$(s)).data.status=="active";allow read:if host(s)||(signed()&&request.auth.uid==uid);allow update,delete:if host(s);}
-  match /answers/{answerId}{allow create:if signed()&&request.auth.uid==request.resource.data.uid&&answerId==request.auth.uid+"_"+request.resource.data.round&&request.resource.data.round==get(/databases/$(database)/documents/sessions/$(s)).data.currentRound&&get(/databases/$(database)/documents/sessions/$(s)).data.status=="active"&&get(/databases/$(database)/documents/sessions/$(s)).data.revealed==false;allow read:if host(s)||(signed()&&resource.data.uid==request.auth.uid);allow update,delete:if host(s);}
- }
+  function signed(){return request.auth != null;}
+  function adminAuth(){return signed() && request.auth.token.firebase.sign_in_provider == "password";}
+  function host(s){return adminAuth() && get(/databases/$(database)/documents/sessions/$(s)).data.hostUid == request.auth.uid;}
+  match /sessions/{s}{
+   allow create: if adminAuth() && request.resource.data.hostUid==request.auth.uid;
+   allow read: if signed() && (resource.data.hostUid==request.auth.uid || resource.data.status=="active");
+   allow update,delete: if host(s);
+   match /private/{docId}{allow read,write:if host(s);}
+   match /players/{uid}{
+    allow create:if signed()&&request.auth.uid==uid&&get(/databases/$(database)/documents/sessions/$(s)).data.status=="active";
+    allow read:if host(s)||(signed()&&request.auth.uid==uid);
+    allow update,delete:if host(s);
+   }
+   match /answers/{answerId}{
+    allow create:if signed()&&request.auth.uid==request.resource.data.uid&&answerId==request.auth.uid+"_"+request.resource.data.round&&request.resource.data.round==get(/databases/$(database)/documents/sessions/$(s)).data.currentRound&&get(/databases/$(database)/documents/sessions/$(s)).data.status=="active"&&get(/databases/$(database)/documents/sessions/$(s)).data.revealed==false;
+    allow read:if host(s)||(signed()&&answerId==request.auth.uid+"_"+get(/databases/$(database)/documents/sessions/$(s)).data.currentRound);
+    allow update,delete:if host(s);
+   }
+  }
  }
 }
