@@ -1,13 +1,19 @@
 # El precio es…
 Juego complementario independiente de Éthykos Next.
 
-Scaffold estático inicial: interfaz de participación y estimación de precios, con productos de ejemplo. Configuración local no protegida y no multiusuario; no desplegar aún como aplicación real.
+## Estado
+- Proyecto Firebase: `elprecioes`.
+- Firestore creado en modo producción (reglas iniciales de denegación).
+- SDK Firebase modular inicializado en `src/firebase.js`.
+- La interfaz muestra un indicador de inicialización.
+- La aplicación todavía no realiza operaciones de lectura/escritura en Firestore.
+- El prototipo local de juego sigue siendo provisional; no representa la dinámica final ya acordada.
 
 ## Próximos pasos
-- Diseñar anfitrión y salas sincronizadas.
-- Backend Firebase Realtime Database.
-- Autenticación y permisos reales exclusivos del administrador.
-- Profesores sin edición; participantes solo juegan.
-- Pruebas multi-dispositivo y deploy Vercel.
+- Implementar la dinámica establecida con sesiones sincronizadas.
+- Definir esquema y reglas de seguridad de Firestore.
+- Implementar autenticación y permisos reales exclusivos del administrador.
+- Participantes: acceso limitado a las funciones y datos que requiera la partida.
+- Pruebas multi-dispositivo y deployment Vercel.
 
 Éthykos Next enlaza al deployment. No se requiere sincronización entre apps. El registro de acceso en Éthykos no certifica que el juego haya terminado.
