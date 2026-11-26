@@ -1,1 +1,24 @@
-const products=[{name:"Audífonos inalámbricos",price:89000},{name:"Botella térmica",price:52000},{name:"Teclado",price:135000}];let player="",round=0,active;const $=id=>document.getElementById(id);function start(){player=$("playerName").value.trim();if(!player)return alert("Escribe tu nombre");$("welcome").classList.add("hidden");$("game").classList.remove("hidden");$("playerLabel").textContent="Participante: "+player;next()}function next(){if(round>=products.length){$("roundTitle").textContent="Juego terminado";$("product").textContent="Gracias por participar";$("guess").disabled=true;$("submitGuess").disabled=true;return}active=products[round];$("roundTitle").textContent=`Ronda ${round+1} / ${products.length}`;$("product").textContent=active.name;$("guess").value="";$("feedback").textContent=""}function submit(){let n=Number($("guess").value);if(!n||n<0)return alert("Ingresa una estimación válida");let delta=Math.abs(n-active.price);$("feedback").textContent=delta===0?"¡Exacto!":`Diferencia: $${delta.toLocaleString("es-CO")}`;round++;setTimeout(next,1500)}function add(){let name=$("productName").value.trim(),price=Number($("productPrice").value);if(!name||!price)return alert("Completa producto y precio");products.push({name,price});$("productList").innerHTML=products.map(p=>`<li>${p.name} — $${p.price.toLocaleString("es-CO")}</li>`).join("");$("productName").value="";$("productPrice").value=""}$("joinBtn").onclick=start;$("submitGuess").onclick=submit;$("addProduct").onclick=add;
+import { firebaseApp, db, firebaseProjectId } from "./firebase.js";
+
+const products=[{name:"Audífonos inalámbricos",price:89000},{name:"Botella térmica",price:52000},{name:"Teclado",price:135000}];
+let player="",round=0,active;
+const $=id=>document.getElementById(id);
+
+function showFirebaseStatus(){
+  const status=$("firebaseStatus");
+  if(firebaseApp && db){
+    status.textContent=`Firebase inicializado · Proyecto: ${firebaseProjectId}. Base de datos aún sin operaciones de lectura/escritura.`;
+    status.classList.add("status-ready");
+  } else {
+    status.textContent="No se pudo inicializar Firebase.";
+    status.classList.add("status-error");
+  }
+}
+function start(){player=$("playerName").value.trim();if(!player)return alert("Escribe tu nombre");$("welcome").classList.add("hidden");$("game").classList.remove("hidden");$("playerLabel").textContent="Participante: "+player;next()}
+function next(){if(round>=products.length){$("roundTitle").textContent="Juego terminado";$("product").textContent="Gracias por participar";$("guess").disabled=true;$("submitGuess").disabled=true;return}active=products[round];$("roundTitle").textContent=`Ronda ${round+1} / ${products.length}`;$("product").textContent=active.name;$("guess").value="";$("feedback").textContent=""}
+function submit(){let n=Number($("guess").value);if(!n||n<0)return alert("Ingresa una estimación válida");let delta=Math.abs(n-active.price);$("feedback").textContent=delta===0?"¡Exacto!":`Diferencia: $${delta.toLocaleString("es-CO")}`;round++;setTimeout(next,1500)}
+function add(){let name=$("productName").value.trim(),price=Number($("productPrice").value);if(!name||!price)return alert("Completa producto y precio");products.push({name,price});$("productList").innerHTML=products.map(p=>`<li>${p.name} — $${p.price.toLocaleString("es-CO")}</li>`).join("");$("productName").value="";$("productPrice").value=""}
+$("joinBtn").onclick=start;
+$("submitGuess").onclick=submit;
+$("addProduct").onclick=add;
+showFirebaseStatus();
