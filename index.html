@@ -1,1 +1,46 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>El precio es…</title><link rel="stylesheet" href="src/styles.css"></head><body><main class="shell"><header class="hero"><h1>El precio es…</h1><p>¿Qué tan cerca estás del precio real?</p></header><section id="welcome" class="panel"><h2>¡Participa!</h2><label>Tu nombre</label><input id="playerName" placeholder="Escribe tu nombre"><button id="joinBtn">Ingresar</button></section><section id="game" class="panel hidden"><p id="playerLabel"></p><h2 id="roundTitle"></h2><div id="product" class="product"></div><label>¿Cuánto crees que cuesta?</label><input id="guess" inputmode="numeric" placeholder="Estimación en COP"><button id="submitGuess">Enviar estimación</button><p id="feedback"></p></section><section class="panel"><details><summary>Configuración prototipo (local)</summary><p class="note">No está protegida. La administración exclusiva requiere autenticación y backend.</p><label>Producto</label><input id="productName"><label>Precio COP</label><input id="productPrice" inputmode="numeric"><button id="addProduct">Agregar</button><ul id="productList"></ul></details></section></main><script src="src/app.js"></script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>El precio es…</title>
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <h1>El precio es…</h1>
+      <p>¿Qué tan cerca estás del precio real?</p>
+      <p id="firebaseStatus" class="status" role="status">Conectando con Firebase…</p>
+    </header>
+    <section id="welcome" class="panel">
+      <h2>¡Participa!</h2>
+      <label for="playerName">Tu nombre</label>
+      <input id="playerName" placeholder="Escribe tu nombre">
+      <button id="joinBtn">Ingresar</button>
+    </section>
+    <section id="game" class="panel hidden">
+      <p id="playerLabel"></p>
+      <h2 id="roundTitle"></h2>
+      <div id="product" class="product"></div>
+      <label for="guess">¿Cuánto crees que cuesta?</label>
+      <input id="guess" inputmode="numeric" placeholder="Estimación en COP">
+      <button id="submitGuess">Enviar estimación</button>
+      <p id="feedback"></p>
+    </section>
+    <section class="panel">
+      <details>
+        <summary>Configuración prototipo (local)</summary>
+        <p class="note">Esta configuración local es solo de prototipo. La administración exclusiva requiere autenticación y reglas de backend.</p>
+        <label for="productName">Producto</label>
+        <input id="productName">
+        <label for="productPrice">Precio COP</label>
+        <input id="productPrice" inputmode="numeric">
+        <button id="addProduct">Agregar</button>
+        <ul id="productList"></ul>
+      </details>
+    </section>
+  </main>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
