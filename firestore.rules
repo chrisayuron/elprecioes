@@ -6,7 +6,7 @@ service cloud.firestore {
   function host(s){return adminAuth() && get(/databases/$(database)/documents/sessions/$(s)).data.hostUid == request.auth.uid;}
   match /sessions/{s}{
    allow create: if adminAuth() && request.resource.data.hostUid==request.auth.uid;
-   allow read: if signed() && (resource.data.hostUid==request.auth.uid || resource.data.status=="active");
+   allow read: if signed() && (resource.data.hostUid==request.auth.uid || resource.data.status in ["active","finished"]);
    allow update,delete: if host(s);
    match /private/{docId}{allow read,write:if host(s);}
    match /players/{uid}{
